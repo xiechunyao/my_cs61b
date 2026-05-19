@@ -84,20 +84,14 @@ public class Model {
      *  Empty spaces are stored as null.
      * */
     public boolean emptySpaceExists() {
-        int x, y;
-        boolean isEmptySpaceExists = false;
-        for (y = 0; y < 4; ++y) {
-            for (x = 0; x < 4; ++x) {
+        for (int y = 0; y < 4; ++y) {
+            for (int x = 0; x < 4; ++x) {
                 if (board.tile(x, y) == null) {
-                    isEmptySpaceExists = true;
-                    break;
+                    return true;
                 }
             }
-            if (isEmptySpaceExists) {
-                break;
-            }
         }
-        return isEmptySpaceExists;
+        return false;
     }
 
     /**
@@ -106,20 +100,14 @@ public class Model {
      * given a Tile object t, we get its value with t.value().
      */
     public boolean maxTileExists() {
-        int x, y;
-        boolean isMaxTileExists = false;
-        for (y = 0; y < 4; ++y) {
-            for (x = 0; x < 4; ++x) {
+        for (int y = 0; y < 4; ++y) {
+            for (int x = 0; x < 4; ++x) {
                 if (board.tile(x, y) != null && board.tile(x, y).value() == MAX_PIECE) {
-                    isMaxTileExists = true;
-                    break;
+                    return true;
                 }
             }
-            if (isMaxTileExists) {
-                break;
-            }
         }
-        return isMaxTileExists;
+        return false;
     }
 
     /**
@@ -129,7 +117,23 @@ public class Model {
      * 2. There are two adjacent tiles with the same value.
      */
     public boolean atLeastOneMoveExists() {
-        // TODO: Fill in this function.
+        if (emptySpaceExists()) {
+            return true;
+        } else {
+            for (int y = 0; y < 4; ++y) {
+                for (int x = 0; x < 4; ++x) {
+                    // Check if the value of current tile is equal to the one below.
+                    // The following if statement have the same logic.
+                    // It's feasible to only check the left and right sides.
+                    if (x - 1 >= 0 && (board.tile(x, y).value() == board.tile(x - 1, y).value())) {
+                        return true;
+                    }
+                    if (y + 1 < 4 && (board.tile(x, y).value() == board.tile(x, y + 1).value())) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
