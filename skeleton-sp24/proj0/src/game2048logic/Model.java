@@ -84,8 +84,8 @@ public class Model {
      *  Empty spaces are stored as null.
      * */
     public boolean emptySpaceExists() {
-        for (int y = 0; y < 4; ++y) {
-            for (int x = 0; x < 4; ++x) {
+        for (int y = 0; y < board.size(); ++y) {
+            for (int x = 0; x < board.size(); ++x) {
                 if (board.tile(x, y) == null) {
                     return true;
                 }
@@ -100,8 +100,8 @@ public class Model {
      * given a Tile object t, we get its value with t.value().
      */
     public boolean maxTileExists() {
-        for (int y = 0; y < 4; ++y) {
-            for (int x = 0; x < 4; ++x) {
+        for (int y = 0; y < board.size(); ++y) {
+            for (int x = 0; x < board.size(); ++x) {
                 if (board.tile(x, y) != null && board.tile(x, y).value() == MAX_PIECE) {
                     return true;
                 }
@@ -120,15 +120,15 @@ public class Model {
         if (emptySpaceExists()) {
             return true;
         } else {
-            for (int y = 0; y < 4; ++y) {
-                for (int x = 0; x < 4; ++x) {
+            for (int y = 0; y < board.size(); ++y) {
+                for (int x = 0; x < board.size(); ++x) {
                     // Check if the value of current tile is equal to the one below.
                     // The following if statement have the same logic.
                     // It's feasible to only check the left and right sides.
                     if (x - 1 >= 0 && (board.tile(x, y).value() == board.tile(x - 1, y).value())) {
                         return true;
                     }
-                    if (y + 1 < 4 && (board.tile(x, y).value() == board.tile(x, y + 1).value())) {
+                    if (y + 1 < board.size() && (board.tile(x, y).value() == board.tile(x, y + 1).value())) {
                         return true;
                     }
                 }
@@ -155,13 +155,14 @@ public class Model {
         Tile currTile = board.tile(x, y);
         int myValue = currTile.value();
         int targetY = y;
-        while (targetY < 4) {
-            if (targetY + 1 < 4) {
+        while (targetY < board.size()) {
+            if (targetY + 1 < board.size()) {
                 // Check if it's empty ahead.
                 if (board.tile(x, targetY + 1) == null) {
                     ++targetY;
                 } else if (board.tile(x, targetY + 1).value() == myValue && !board.tile(x, targetY + 1).wasMerged()) {
                     ++targetY;
+                    score += 2 * board.tile(x, targetY).value();
                     break;
                 } else {
                     break;
@@ -182,7 +183,7 @@ public class Model {
      * so we are tilting the tiles in this column up.
      * */
     public void tiltColumn(int x) {
-        for (int y = 3; y >= 0; --y) {
+        for (int y = board.size() - 1; y >= 0; --y) {
             if (board.tile(x, y) != null) {
                 moveTileUpAsFarAsPossible(x, y);
             }
@@ -191,7 +192,7 @@ public class Model {
 
     public void tilt(Side side) {
         board.setViewingPerspective(side);
-        for (int x = 0; x < 4; ++x) {
+        for (int x = 0; x < board.size(); ++x) {
             tiltColumn(x);
         }
         board.setViewingPerspective(Side.NORTH);
