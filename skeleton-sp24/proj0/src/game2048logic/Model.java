@@ -160,6 +160,9 @@ public class Model {
                 // Check if it's empty ahead.
                 if (board.tile(x, targetY + 1) == null) {
                     ++targetY;
+                } else if (board.tile(x, targetY + 1).value() == myValue && !board.tile(x, targetY + 1).wasMerged()) {
+                    ++targetY;
+                    break;
                 } else {
                     break;
                 }
