@@ -155,8 +155,20 @@ public class Model {
         Tile currTile = board.tile(x, y);
         int myValue = currTile.value();
         int targetY = y;
-
-        // TODO: Tasks 5, 6, and 10. Fill in this function.
+        while (targetY < 4) {
+            if (targetY + 1 < 4) {
+                // Check if it's empty ahead.
+                if (board.tile(x, targetY + 1) == null) {
+                    ++targetY;
+                } else {
+                    break;
+                }
+            } else {
+                // target has reached the boundary.
+                break;
+            }
+        }
+        board.move(x, targetY, currTile);
     }
 
     /** Handles the movements of the tilt in column x of the board
