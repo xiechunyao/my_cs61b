@@ -46,7 +46,7 @@ public class BombTest {
     /** Runs up to the given phase in BombMain and modifies the lines variable to have its output.*/
     public static void getBombMainOutputUntil(int phase) {
         // checkIfModified();
-
+        // Due to certain issues, I commented out this function.
         PrintStream systemErr = System.err;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setErr(new PrintStream(outputStream));
